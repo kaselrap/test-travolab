@@ -35,6 +35,13 @@
                             window.location.href = $('.return-back').attr('href');
                         });
                     }
+                    if (response.failure) {
+                        swal({
+                            icon: 'error',
+                            title: 'Ошибка',
+                            text: response.errors[0]
+                        });
+                    }
                 }
             });
         });

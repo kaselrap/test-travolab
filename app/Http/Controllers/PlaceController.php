@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Request;
 use App\Model\Place;
 
 /**
@@ -30,8 +31,17 @@ class PlaceController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function update(Place $place = null)
+    public function update(Request $request, Place $place = null)
     {
+        $errors = $request->getErrors()->all();
+
+        if (count($errors) > 0) {
+            return response()->json([
+                'failure' => true,
+                'errors' => $errors
+            ]);
+        }
+
         if (!$place) {
             $place = new Place();
         }

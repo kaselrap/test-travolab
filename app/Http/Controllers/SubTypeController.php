@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubtypeRequest;
 use App\Model\Subtype;
 use App\Model\Type;
 
@@ -33,8 +34,17 @@ class SubTypeController extends Controller
      * @param Type|null $type
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Subtype $subtype = null)
+    public function update(SubtypeRequest $request, Subtype $subtype = null)
     {
+        $errors = $request->getErrors()->all();
+
+        if (count($errors) > 0) {
+            return response()->json([
+                'failure' => true,
+                'errors' => $errors
+            ]);
+        }
+
         if (!$subtype) {
             $subtype = new Subtype();
         }

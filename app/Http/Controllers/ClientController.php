@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Request;
 use App\Model\Client;
 use App\Model\Event;
+use App\Model\FizClient;
+use App\Model\Organization;
 use App\Model\OrganizationType;
-use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
@@ -31,20 +33,31 @@ class ClientController extends Controller
      * @param Event|null $event
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update($type, Client $client = null)
+    public function update(Request $request, $type, Client $client = null)
     {
+        $errors = $request->getErrors()->all();
+
+        if (count($errors) > 0) {
+            return response()->json([
+                'failure' => true,
+                'errors' => $errors
+            ]);
+        }
+
         if (!$client) {
             $client = new Client();
         }
 
         $client->constants = request()->input('constants', 0);
+        $client->types = $type;
 
         if ($client->save()) {
 
             $clientType = $client->model;
 
-            if (!$clientType->exists) {
-                $clientType = new $client->model();
+            if (!$clientType) {
+                $clientType = (int)$type === 1 ? new Organization() : new FizClient();
+                $clientType->client_id = $client->id;
             }
 
             $clientType->name = request()->input('name', '');

@@ -15,8 +15,16 @@ class Request extends FormRequest
     /**
      * @var array
      */
-    protected $rules = [];
+    protected $rules = [
+        'name' => 'required',
+    ];
 
+    public function messages()
+    {
+        return [
+            'name.required' => 'Поле название обязательно для заполнения',
+        ];
+    }
     /**
      * Determine if the user is authorized to make this request.
      *

@@ -40,6 +40,9 @@ class UserRequestController extends Controller
 
         $userRequest = new UserRequests();
         foreach ($this->fillable as $filled) {
+            if ($filled == 'place_id' && empty($request->input($filled, ''))) {
+                continue;
+            }
             $userRequest->{$filled} = $request->input($filled, '');
         }
 

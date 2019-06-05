@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EventRequest;
 use App\Http\Requests\ReservationRequest;
 use App\Model\Event;
 use App\Model\EventCoast;
@@ -30,8 +31,17 @@ class EventController extends Controller
      * @param Event|null $event
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Event $event = null)
+    public function update(EventRequest $request, Event $event = null)
     {
+        $errors = $request->getErrors()->all();
+
+        if (count($errors) > 0) {
+            return response()->json([
+                'failure' => true,
+                'errors' => $errors
+            ]);
+        }
+
         if (!$event) {
             $event = new Event();
         }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Request;
 use App\Model\OrganizationType;
-use Illuminate\Http\Request;
 
 class OrganizationTypeController extends Controller
 {
@@ -28,8 +28,17 @@ class OrganizationTypeController extends Controller
      * @param OrganizationType|null $organizationType
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(OrganizationType $organizationType = null)
+    public function update(Request $request, OrganizationType $organizationType = null)
     {
+        $errors = $request->getErrors()->all();
+
+        if (count($errors) > 0) {
+            return response()->json([
+                'failure' => true,
+                'errors' => $errors
+            ]);
+        }
+
         if (!$organizationType) {
             $organizationType = new OrganizationType();
         }

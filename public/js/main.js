@@ -136,7 +136,7 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/stanislav/projects/kovalyov/resources/assets/js/main.js */"./resources/assets/js/main.js");
+module.exports = __webpack_require__(/*! /home/stanislav/projects/test-travolab/resources/assets/js/main.js */"./resources/assets/js/main.js");
 
 
 /***/ })

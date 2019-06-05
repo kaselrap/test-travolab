@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Request;
 use App\Model\Type;
 
 class TypeController extends Controller
@@ -27,8 +28,17 @@ class TypeController extends Controller
      * @param Type|null $type
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Type $type = null)
+    public function update(Request $request, Type $type = null)
     {
+        $errors = $request->getErrors()->all();
+
+        if (count($errors) > 0) {
+            return response()->json([
+                'failure' => true,
+                'errors' => $errors
+            ]);
+        }
+
         if (!$type) {
             $type = new Type();
         }

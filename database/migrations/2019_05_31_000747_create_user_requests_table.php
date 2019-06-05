@@ -19,7 +19,7 @@ class CreateUserRequestsTable extends Migration
             $table->string('email');
             $table->string('phone');
             $table->longText('message')->nullable();
-            $table->unsignedInteger('place_id')->index()->nullable();
+            $table->unsignedInteger('place_id')->nullable();
             $table->timestamps();
         });
     }
